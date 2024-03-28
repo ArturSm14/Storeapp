@@ -8,6 +8,9 @@ export default function Home() {
  const [cartList, setCartList] = useState([])
 
  
+ function addTocart(product) {
+   setCartList([...cartList, products])
+ }
  useEffect(() => {
   getDados()
  },[])
@@ -15,6 +18,7 @@ export default function Home() {
  async function getDados(){
   const data = await fetch("https://fakestoreapi.com/products")
   const prod = await data.json()
+
   
   
 
@@ -40,7 +44,9 @@ export default function Home() {
           </div>
           <div className="flex-grow"></div>
           <button className="hover:bg-blue-700 transition-all rounded-md border-2 bg-blue-400 p-2 min-w-full">COMPRAR</button>
-          <button className="hover:bg-green-700 transition-all rounded-md border-2 bg-green-400 p-2 min-w-full">ADICIONAR AO CARRINHO</button>
+          <button onClick={() => {
+            addTocart(p)
+          }} className="hover:bg-green-700 transition-all rounded-md border-2 bg-green-400 p-2 min-w-full">ADICIONAR AO CARRINHO</button>
         </div>)
       })}
     </main>
