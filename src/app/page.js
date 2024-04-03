@@ -11,6 +11,7 @@ export default function Home() {
  const [classe, setClasse] = useState("hidden")
 
 
+
  useEffect(() => {
   if (modal) {
     setClasse("")
@@ -31,11 +32,24 @@ export default function Home() {
  
  function addTocart(product) {
    setCart([...cart, product])
+   
+   window.localStorage.setItem("cart", JSON.stringify([...cart, product]))
  }
 
  useEffect(() => {
+  const dados = window.localStorage.getItem("cart")
+
+  if (dados) {
+    const dadosConvertidos = JSON.parse(dados)
+
+    setCart(dadosConvertidos)
+  }
+
+
   getDados()
  },[])
+
+
 
  async function getDados(){
   const data = await fetch("https://fakestoreapi.com/products")
@@ -48,8 +62,8 @@ export default function Home() {
     <>
       <main className="flex min-h-screen max-w-screen flex-wrap gap-6 items-center justify-center p-24 relative">
         <div className="min-w-full flex justify-end px-6">
-          <div className="cursor-pointer relative">
-            <Image onClick={abrirModal} src={cartImage} width={35} height={35} alt="cart"/>
+          <div  onClick={abrirModal} className="cursor-pointer relative">
+            <Image src={cartImage} width={35} height={35} alt="cart"/>
             <p className="absolute bottom-1 flex justify-center items-center bg-red-500 rounded-full text-[18px] w-[20px] h-[20px] text-white font-bold">{cart.length}</p>
           </div>
         </div>
@@ -95,11 +109,8 @@ export default function Home() {
                   )
                 })}
                 <button className="rounded-md border-none p-3 bg-red-500">Comprar</button>
-
               </div>
           </div>
-
-       
       </main>
       
     </>
